@@ -1,6 +1,9 @@
 package model;
 
 import lombok.Data;
+import validators.ChordModelAddNodeValidator;
+import validators.ChordModelInitValidator;
+import validators.ChordModelSearchNodeValidator;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class ChordModel {
     private List<BigInteger> positions = new ArrayList<>();
 
     public ChordModel(int bitsCount, List<Integer> nodesPositions) {
+        ChordModelInitValidator.validate(bitsCount, nodesPositions);
 
         this.bitsCount = bitsCount;
         this.modelSize = BigInteger.TWO.pow(bitsCount);
@@ -53,6 +57,7 @@ public class ChordModel {
     }
 
     public void addNode(Integer position) {
+        ChordModelAddNodeValidator.validate(this, position);
         BigInteger positionBigInteger = BigInteger.valueOf(position);
         positions.add(positionBigInteger);
         Collections.sort(positions);
@@ -69,6 +74,7 @@ public class ChordModel {
     }
 
     public ChordNode findNode(String startPos, String targetPos) {
+        ChordModelSearchNodeValidator.validate(this, startPos, targetPos);
         BigInteger currentPos = new BigInteger(startPos);
         BigInteger targetPosB = new BigInteger(targetPos);
 
